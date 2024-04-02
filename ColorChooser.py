@@ -23,8 +23,18 @@ colour_picker_button = UIButton(relative_rect=pygame.Rect(-180, -60, 150, 30),
                                         'bottom': 'bottom'})
 colour_picker = None                                    
 current_colour = pygame.Color(0, 0, 0)
-picked_colour_surface = pygame.Surface((200, 400))
+
+padding_x = 20
+padding_y = 20
+
+#Set up picked_colour_surface
+square_size = min(background.get_width(), background.get_height()) // 5
+picked_colour_surface = pygame.Surface((square_size, square_size))
 picked_colour_surface.fill(current_colour)
+
+# Font setup
+font = pygame.font.Font(None, 24)  # You can change the font and size here
+text_surface = font.render("Picked color:", True, (255, 255, 255))  # White color
 
 clock = pygame.time.Clock()
 
@@ -53,7 +63,12 @@ while True:
     ui_manager.update(time_delta)
 
     SCREEN.blit(background, (0, 0))
-    SCREEN.blit(picked_colour_surface, (200, 100))
+    SCREEN.blit(picked_colour_surface, (background.get_width() - square_size - padding_x,
+                                        padding_y))
+    
+    # Blit the text_surface to the left of the picked_colour_surface
+    SCREEN.blit(text_surface, (background.get_width() - square_size - padding_x - text_surface.get_width(),
+                               padding_y))
 
     ui_manager.draw_ui(SCREEN)
 
