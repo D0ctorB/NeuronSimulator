@@ -36,6 +36,22 @@ picked_colour_surface.fill(current_colour)
 font = pygame.font.Font(None, 34)  # You can change the font and size here
 text_surface = font.render("Picked color:", True, (255, 255, 255))  # White color
 
+# Add circles and lines
+circle_radius = 50
+triangle_side = 300
+circle_y = background.get_height() // 2
+
+# Calculate circle positions for the triangle
+circle_positions = [
+    (background.get_width() // 2, circle_y - triangle_side // 2),  # Top
+    (background.get_width() // 2 - triangle_side // 2, circle_y + triangle_side // 2),  # Bottom left
+    (background.get_width() // 2 + triangle_side // 2, circle_y + triangle_side // 2)  # Bottom right
+]
+
+# Colors for the circles
+circle_colors = [(90, 0, 0), (0, 90, 0), (0, 0, 90)]
+
+
 clock = pygame.time.Clock()
 
 while True:
@@ -69,6 +85,16 @@ while True:
     # Blit the text_surface to the left of the picked_colour_surface
     SCREEN.blit(text_surface, (background.get_width() - square_size - padding_x - text_surface.get_width() - 10,
                                padding_y + 40))
+    
+    # Draw circles and lines forming a triangle
+    for color, position in zip(circle_colors, circle_positions):
+        pygame.draw.circle(background, color, position, circle_radius)
+
+    # Draw lines connecting the circles to form a triangle
+    pygame.draw.line(background, (255, 255, 255), circle_positions[0], circle_positions[1], 2)
+    pygame.draw.line(background, (255, 255, 255), circle_positions[1], circle_positions[2], 2)
+    pygame.draw.line(background, (255, 255, 255), circle_positions[2], circle_positions[0], 2)
+
 
     ui_manager.draw_ui(SCREEN)
 
