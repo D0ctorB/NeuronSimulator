@@ -33,7 +33,7 @@ picked_colour_surface = pygame.Surface((square_size, square_size))
 picked_colour_surface.fill(current_colour)
 
 # Font setup
-font = pygame.font.Font(None, 24)  # You can change the font and size here
+font = pygame.font.Font(None, 34)  # You can change the font and size here
 text_surface = font.render("Picked color:", True, (255, 255, 255))  # White color
 
 clock = pygame.time.Clock()
@@ -67,8 +67,8 @@ while True:
                                         padding_y))
     
     # Blit the text_surface to the left of the picked_colour_surface
-    SCREEN.blit(text_surface, (background.get_width() - square_size - padding_x - text_surface.get_width(),
-                               padding_y))
+    SCREEN.blit(text_surface, (background.get_width() - square_size - padding_x - text_surface.get_width() - 10,
+                               padding_y + 40))
 
     ui_manager.draw_ui(SCREEN)
 
