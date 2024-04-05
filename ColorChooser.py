@@ -54,6 +54,18 @@ circle_positions = [
 # Colors for the circles
 circle_colors = [(90, 0, 0), (0, 90, 0), (0, 0, 90)]
 
+# Load brain image from a local file
+brain_image_path = "Human_brain.png"
+brain_image = pygame.image.load(brain_image_path)
+
+#increase brain size
+scaled_width = int(brain_image.get_width() * 1.2)
+scaled_height = int(brain_image.get_height() * 1.2)
+brain_image = pygame.transform.scale(brain_image, (scaled_width, scaled_height))
+
+# Set transparency of the brain image
+brain_image.set_alpha(80)  # Adjust the alpha value (0-255) for desired transparency
+
 clock = pygame.time.Clock()
 
 generate_red_pois = False
@@ -130,6 +142,10 @@ while True:
     # Draw circles and lines forming a triangle
     for color, position in zip(circle_colors, circle_positions):
         pygame.draw.circle(background, color, position, circle_radius)
+
+    #Blit brain image
+    SCREEN.blit(brain_image, (background.get_width() // 2 - scaled_width // 2,
+                              circle_y - scaled_height // 2))
     
     # Draw lines connecting the circles to form a triangle
     pygame.draw.line(background, (255, 255, 255), circle_positions[0], circle_positions[1], 2)
