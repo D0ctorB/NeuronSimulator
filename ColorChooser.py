@@ -1,6 +1,9 @@
 import pygame
 import sys
 import pygame_gui
+import numpy as np
+import requests
+from io import BytesIO
 
 from pygame_gui.elements import UIButton
 from pygame_gui.windows import UIColourPickerDialog
@@ -51,8 +54,11 @@ circle_positions = [
 # Colors for the circles
 circle_colors = [(90, 0, 0), (0, 90, 0), (0, 0, 90)]
 
-
 clock = pygame.time.Clock()
+
+generate_red_pois = False
+generate_green_pois = False
+generate_blue_pois = False
 
 while True:
     time_delta = clock.tick(60) / 1000
@@ -69,6 +75,7 @@ while True:
         if event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
             current_colour = event.colour
             picked_colour_surface.fill(current_colour)
+
             print(current_colour)
         if event.type == pygame_gui.UI_WINDOW_CLOSE:
             colour_picker_button.enable()
@@ -86,14 +93,49 @@ while True:
     SCREEN.blit(text_surface, (background.get_width() - square_size - padding_x - text_surface.get_width() - 10,
                                padding_y + 40))
     
+    rgb_values = [current_colour.r, current_colour.g, current_colour.b]
+    circle_colors = [(90, 0, 0), (0, 90, 0), (0, 0, 90)]
+
+    #generate num of frames to wait
+    if (generate_red_pois == False):
+        red_frames_wait = np.random.poisson(260 - rgb_values[0])
+        generate_red_pois = True
+    if (generate_green_pois == False):
+        green_frames_wait = np.random.poisson(260 - rgb_values[1])
+        generate_green_pois = True
+    if (generate_blue_pois == False):
+        blue_frames_wait = np.random.poisson(260 - rgb_values[2])
+        generate_blue_pois = True
+    
+   
+    #decrement wait frames, change color
+    red_frames_wait -= 1
+    if (red_frames_wait <= 0 and red_frames_wait >= -5):
+        circle_colors[0] = (255, 0, 0)
+    elif (red_frames_wait < -1):
+        generate_red_pois = False
+
+    green_frames_wait -= 1
+    if (green_frames_wait <= 0 and green_frames_wait >= -5):
+        circle_colors[1] = (0, 255, 0)
+    elif (green_frames_wait < -1):
+        generate_green_pois = False
+    
+    blue_frames_wait -= 1
+    if (blue_frames_wait <= 0 and blue_frames_wait >= -5):
+        circle_colors[2] = (0, 0, 255)
+    elif (blue_frames_wait < -1):
+        generate_blue_pois = False
+    
     # Draw circles and lines forming a triangle
     for color, position in zip(circle_colors, circle_positions):
         pygame.draw.circle(background, color, position, circle_radius)
-
+    
     # Draw lines connecting the circles to form a triangle
     pygame.draw.line(background, (255, 255, 255), circle_positions[0], circle_positions[1], 2)
     pygame.draw.line(background, (255, 255, 255), circle_positions[1], circle_positions[2], 2)
     pygame.draw.line(background, (255, 255, 255), circle_positions[2], circle_positions[0], 2)
+
 
 
     ui_manager.draw_ui(SCREEN)
