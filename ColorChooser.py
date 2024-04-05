@@ -148,9 +148,9 @@ while True:
                               circle_y - scaled_height // 2))
     
     # Draw lines connecting the circles to form a triangle
-    pygame.draw.line(background, (255, 255, 255), circle_positions[0], circle_positions[1], 2)
-    pygame.draw.line(background, (255, 255, 255), circle_positions[1], circle_positions[2], 2)
-    pygame.draw.line(background, (255, 255, 255), circle_positions[2], circle_positions[0], 2)
+    #pygame.draw.line(background, (255, 255, 255), circle_positions[0], circle_positions[1], 2)
+    #pygame.draw.line(background, (255, 255, 255), circle_positions[1], circle_positions[2], 2)
+    #pygame.draw.line(background, (255, 255, 255), circle_positions[2], circle_positions[0], 2)
 
 
 
